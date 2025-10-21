@@ -1,3 +1,4 @@
+"use client";
 
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -10,19 +11,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Chrome, Github } from "lucide-react";
-import { signIn } from "@/auth";
-
-async function handleGoogleSignIn(){
-"use server"
-await signIn("google")
-}
-
-async function handleGithubSignIn(){
-"use server"
-await signIn("github")
-}
+import { signIn } from "next-auth/react";
 
 const SignInFormClient = () => {
+  const handleGoogleSignIn = async () => {
+    await signIn("google", { callbackUrl: "/" });
+  };
+
+  const handleGithubSignIn = async () => {
+    await signIn("github", { callbackUrl: "/" });
+  };
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
@@ -35,18 +34,23 @@ const SignInFormClient = () => {
       </CardHeader>
 
       <CardContent className="grid gap-4">
-        <form action={handleGoogleSignIn}>
-          <Button type="submit" variant={"outline"} className="w-full">
-            <Chrome className="mr-2 h-4 w-4" />
-            <span>Sign in with google</span>
-          </Button>
-        </form>
-        <form action={handleGithubSignIn}>
-          <Button type="submit" variant={"outline"} className="w-full">
-            <Github className="mr-2 h-4 w-4" />
-            <span>Sign in with github</span>
-          </Button>
-        </form>
+        <Button
+          onClick={handleGoogleSignIn}
+          variant="outline"
+          className="w-full"
+        >
+          <Chrome className="mr-2 h-4 w-4" />
+          <span>Sign in with Google</span>
+        </Button>
+
+        <Button
+          onClick={handleGithubSignIn}
+          variant="outline"
+          className="w-full"
+        >
+          <Github className="mr-2 h-4 w-4" />
+          <span>Sign in with GitHub</span>
+        </Button>
       </CardContent>
 
       <CardFooter>
@@ -67,5 +71,3 @@ const SignInFormClient = () => {
 };
 
 export default SignInFormClient;
-
-
