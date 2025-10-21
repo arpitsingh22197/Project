@@ -17,7 +17,7 @@ import { useCurrentUser } from "../hooks/use-current-user";
 const UserButton = () => {
 
   const user = useCurrentUser()
-  console.log(user);
+  // console.log(user); // For debugging purposes and verification
   
 
   return (
