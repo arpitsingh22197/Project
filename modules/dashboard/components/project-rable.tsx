@@ -286,6 +286,12 @@ export default function ProjectTable({
         </Table>
       </div>
 
+
+
+
+
+
+
       {/* Edit Project Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
@@ -369,4 +375,11 @@ export default function ProjectTable({
       </AlertDialog>
     </>
   );
+   
+
+
+
+
+
+  
 }
