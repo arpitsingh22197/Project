@@ -125,6 +125,9 @@ export const editProjectById = async (
   }
 };
 
+
+
+
 export const duplicateProjectById = async (id: string) => {
   try {
     const originalPlayground = await db.playground.findUnique({
@@ -134,6 +137,11 @@ export const duplicateProjectById = async (id: string) => {
     if (!originalPlayground) {
       throw new Error("Original playground not found");
     }
+
+
+
+
+
 
     const duplicatedPlayground = await db.playground.create({
       data: {
@@ -145,6 +153,8 @@ export const duplicateProjectById = async (id: string) => {
         // todo: add template files
       },
     });
+
+
 
     revalidatePath("/dashboard");
     return duplicatedPlayground;
