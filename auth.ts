@@ -6,6 +6,15 @@ import authConfig from "./auth.config";
 import { db } from "./lib/db";
 import { UserRole } from "@prisma/client";
 
+console.log("ENV CHECK:", {
+  hasSecret: !!process.env.AUTH_SECRET,
+  hasGoogleId: !!process.env.AUTH_GOOGLE_ID,
+  hasGoogleSecret: !!process.env.AUTH_GOOGLE_SECRET,
+  hasGithubId: !!process.env.AUTH_GITHUB_ID,
+  hasGithubSecret: !!process.env.AUTH_GITHUB_SECRET,
+  hasDb: !!process.env.DATABASE_URL,
+})
+
 function CustomPrismaAdapter() {
   const adapter = PrismaAdapter(db);
   console.log("✅ Adapter created:", Object.keys(adapter));
