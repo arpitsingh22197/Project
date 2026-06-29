@@ -196,8 +196,3 @@ GitHub: https://github.com/arpitsingh22197
 
 ---
 
-If you'd like, I can also:
-- Add this README to your repository,
-- Create CONTRIBUTING.md and ISSUE_TEMPLATE.md,
-- Add CI/badge links,
-tell me the repository (owner/name) and branch to use.
