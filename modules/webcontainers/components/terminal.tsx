@@ -493,6 +493,17 @@ const TerminalComponent = forwardRef<TerminalRef, TerminalProps>(
 
             <span className="text-sm font-medium">WebContainer Terminal</span>
 
+            {/* Hint shown when not yet connected */}
+            {!isConnected && (
+              <span className="text-xs text-muted-foreground">
+                Press{" "}
+                <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-xs">
+                  Ctrl+S
+                </kbd>{" "}
+                to refresh
+              </span>
+            )}
+
             {isConnected && (
               <span className="text-xs text-green-500">Connected</span>
             )}
