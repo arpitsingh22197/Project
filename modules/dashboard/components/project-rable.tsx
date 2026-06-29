@@ -76,7 +76,7 @@ interface ProjectTableProps {
 
   onDeleteProject?: (id: string) => Promise<void>;
 
-  onDuplicateProject?: (id: string) => Promise<void>;
+  onDuplicateProject?: (id: string) => Promise<unknown>; // ✅ changed from Promise<void>
 }
 
 interface EditProjectData {
@@ -209,9 +209,7 @@ export default function ProjectTable({
         router.refresh();
       });
 
-      toast.success(
-        "Project duplicated successfully"
-      );
+      toast.success("Project duplicated successfully");
     } catch (error) {
       console.log(error);
 
@@ -291,9 +289,7 @@ export default function ProjectTable({
                     <span className="text-sm text-gray-500">
                       {project.createdAt
                         ? format(
-                            new Date(
-                              project.createdAt
-                            ),
+                            new Date(project.createdAt),
                             "MMM dd, yyyy"
                           )
                         : "-"}
@@ -327,9 +323,7 @@ export default function ProjectTable({
                         <Button
                           variant="ghost"
                           size="icon"
-                          disabled={
-                            isLoading || isPending
-                          }
+                          disabled={isLoading || isPending}
                         >
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
@@ -339,18 +333,14 @@ export default function ProjectTable({
                         {/* MARK */}
                         <DropdownMenuItem asChild>
                           <MarkedToggleButton
-                            markedForRevision={
-                              isMarked
-                            }
+                            markedForRevision={isMarked}
                             id={project.id}
                           />
                         </DropdownMenuItem>
 
                         {/* OPEN */}
                         <DropdownMenuItem asChild>
-                          <Link
-                            href={`/playground/${project.id}`}
-                          >
+                          <Link href={`/playground/${project.id}`}>
                             <Eye className="mr-2 h-4 w-4" />
                             Open
                           </Link>
@@ -358,9 +348,7 @@ export default function ProjectTable({
 
                         {/* EDIT */}
                         <DropdownMenuItem
-                          onClick={() =>
-                            handleEditClick(project)
-                          }
+                          onClick={() => handleEditClick(project)}
                         >
                           <Edit3 className="mr-2 h-4 w-4" />
                           Edit
@@ -368,11 +356,7 @@ export default function ProjectTable({
 
                         {/* DUPLICATE */}
                         <DropdownMenuItem
-                          onClick={() =>
-                            handleDuplicateProject(
-                              project
-                            )
-                          }
+                          onClick={() => handleDuplicateProject(project)}
                         >
                           <Copy className="mr-2 h-4 w-4" />
                           Duplicate
@@ -380,11 +364,7 @@ export default function ProjectTable({
 
                         {/* COPY URL */}
                         <DropdownMenuItem
-                          onClick={() =>
-                            copyProjectUrl(
-                              project.id
-                            )
-                          }
+                          onClick={() => copyProjectUrl(project.id)}
                         >
                           <Download className="mr-2 h-4 w-4" />
                           Copy URL
@@ -394,11 +374,7 @@ export default function ProjectTable({
 
                         {/* DELETE */}
                         <DropdownMenuItem
-                          onClick={() =>
-                            handleDeleteClick(
-                              project
-                            )
-                          }
+                          onClick={() => handleDeleteClick(project)}
                           className="text-destructive"
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
@@ -418,15 +394,10 @@ export default function ProjectTable({
       {/* EDIT DIALOG */}
       {/* ========================= */}
 
-      <Dialog
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-      >
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
-              Edit Project
-            </DialogTitle>
+            <DialogTitle>Edit Project</DialogTitle>
 
             <DialogDescription>
               Update your project details.
@@ -456,8 +427,7 @@ export default function ProjectTable({
                 onChange={(e) =>
                   setEditData((prev) => ({
                     ...prev,
-                    description:
-                      e.target.value,
+                    description: e.target.value,
                   }))
                 }
               />
@@ -467,18 +437,14 @@ export default function ProjectTable({
           <DialogFooter>
             <Button
               variant="outline"
-              onClick={() =>
-                setEditDialogOpen(false)
-              }
+              onClick={() => setEditDialogOpen(false)}
             >
               Cancel
             </Button>
 
             <Button
               onClick={handleUpdateProject}
-              disabled={
-                isLoading || isPending
-              }
+              disabled={isLoading || isPending}
             >
               Save Changes
             </Button>
@@ -490,33 +456,23 @@ export default function ProjectTable({
       {/* DELETE DIALOG */}
       {/* ========================= */}
 
-      <AlertDialog
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
-      >
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              Delete Project
-            </AlertDialogTitle>
+            <AlertDialogTitle>Delete Project</AlertDialogTitle>
 
             <AlertDialogDescription>
-              This action cannot be undone.
-              This will permanently delete
+              This action cannot be undone. This will permanently delete
               your project.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
           <AlertDialogFooter>
-            <AlertDialogCancel>
-              Cancel
-            </AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
 
             <AlertDialogAction
               onClick={handleDeleteProject}
-              disabled={
-                isLoading || isPending
-              }
+              disabled={isLoading || isPending}
               className="bg-red-500 hover:bg-red-600"
             >
               Delete
