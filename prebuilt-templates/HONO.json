@@ -1,0 +1,30 @@
+{
+  "folderName": "hono-nodejs-starter",
+  "items": [
+    {
+      "filename": "package",
+      "fileExtension": "json",
+      "content": "{\r\n  \"name\": \"hono-nodejs-starter\",\r\n  \"type\": \"module\",\r\n  \"scripts\": {\r\n    \"dev\": \"tsx watch src/index.ts\"\r\n  },\r\n  \"dependencies\": {\r\n    \"@hono/node-server\": \"1.13.8\",\r\n    \"hono\": \"4.7.4\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"@types/node\": \"22.13.9\",\r\n    \"tsx\": \"4.19.3\"\r\n  }\r\n}\r\n"
+    },
+    {
+      "filename": "README",
+      "fileExtension": "md",
+      "content": "```\r\nnpm install\r\nnpm run dev\r\n```\r\n\r\n```\r\nopen http://localhost:3000\r\n```\r\n"
+    },
+    {
+      "folderName": "src",
+      "items": [
+        {
+          "filename": "index",
+          "fileExtension": "ts",
+          "content": "import { serve } from '@hono/node-server';\r\nimport { Hono } from 'hono';\r\n\r\nconst app = new Hono();\r\n\r\napp.get('/', (c) => {\r\n  return c.text('Hello Hono!');\r\n});\r\n\r\nconst port = 3000;\r\nconsole.log(`Server is running on http://localhost:${port}`);\r\n\r\nserve({\r\n  fetch: app.fetch,\r\n  port,\r\n});\r\n"
+        }
+      ]
+    },
+    {
+      "filename": "tsconfig",
+      "fileExtension": "json",
+      "content": "{\r\n  \"compilerOptions\": {\r\n    \"target\": \"ESNext\",\r\n    \"module\": \"NodeNext\",\r\n    \"strict\": true,\r\n    \"verbatimModuleSyntax\": true,\r\n    \"skipLibCheck\": true,\r\n    \"types\": [\"node\"],\r\n    \"jsx\": \"react-jsx\",\r\n    \"jsxImportSource\": \"hono/jsx\"\r\n  }\r\n}\r\n"
+    }
+  ]
+}

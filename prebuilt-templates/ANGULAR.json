@@ -1,0 +1,50 @@
+{
+  "folderName": "angular",
+  "items": [
+    {
+      "filename": "angular",
+      "fileExtension": "json",
+      "content": "{\r\n  \"$schema\": \"./node_modules/@angular/cli/lib/config/schema.json\",\r\n  \"cli\": {\r\n    \"analytics\": \"1e1de97b-a744-405a-8b5a-0397bb3d01ce\"\r\n  },\r\n  \"newProjectRoot\": \"projects\",\r\n  \"projects\": {\r\n    \"demo\": {\r\n      \"architect\": {\r\n        \"build\": {\r\n          \"builder\": \"@angular/build:application\",\r\n          \"configurations\": {\r\n            \"development\": {\r\n              \"extractLicenses\": false,\r\n              \"namedChunks\": true,\r\n              \"optimization\": false,\r\n              \"sourceMap\": true\r\n            },\r\n            \"production\": {\r\n              \"extractLicenses\": true,\r\n              \"namedChunks\": false,\r\n              \"optimization\": true,\r\n              \"outputHashing\": \"all\",\r\n              \"sourceMap\": false\r\n            }\r\n          },\r\n          \"options\": {\r\n            \"assets\": [],\r\n            \"index\": \"src/index.html\",\r\n            \"browser\": \"src/main.ts\",\r\n            \"outputPath\": \"dist/demo\",\r\n            \"polyfills\": [],\r\n            \"scripts\": [],\r\n            \"styles\": [\"src/global_styles.css\"],\r\n            \"tsConfig\": \"tsconfig.app.json\"\r\n          }\r\n        },\r\n        \"serve\": {\r\n          \"builder\": \"@angular/build:dev-server\",\r\n          \"configurations\": {\r\n            \"development\": {\r\n              \"buildTarget\": \"demo:build:development\"\r\n            },\r\n            \"production\": {\r\n              \"buildTarget\": \"demo:build:production\"\r\n            }\r\n          },\r\n          \"defaultConfiguration\": \"development\"\r\n        }\r\n      },\r\n      \"prefix\": \"app\",\r\n      \"projectType\": \"application\",\r\n      \"root\": \"\",\r\n      \"schematics\": {},\r\n      \"sourceRoot\": \"src\"\r\n    }\r\n  },\r\n  \"version\": 1\r\n}\r\n"
+    },
+    {
+      "filename": "netlify",
+      "fileExtension": "toml",
+      "content": "[build]\r\ncommand = \"npx ng build\"\r\npublish = \"dist/demo/browser\"\r\n\r\n[[redirects]]\r\n  from = \"/*\"\r\n  to = \"/index.html\"\r\n  status = 200\r\n"
+    },
+    {
+      "filename": "package",
+      "fileExtension": "json",
+      "content": "{\r\n  \"name\": \"angular-starter\",\r\n  \"private\": true,\r\n  \"scripts\": {\r\n    \"ng\": \"ng\",\r\n    \"start\": \"ng serve\",\r\n    \"build\": \"ng build\"\r\n  },\r\n  \"dependencies\": {\r\n    \"@angular/common\": \"^21.1.0\",\r\n    \"@angular/compiler\": \"^21.1.0\",\r\n    \"@angular/core\": \"^21.1.0\",\r\n    \"@angular/forms\": \"^21.1.0\",\r\n    \"@angular/platform-browser\": \"^21.1.0\",\r\n    \"@angular/router\": \"^21.1.0\",\r\n    \"rxjs\": \"^7.8.1\",\r\n    \"tslib\": \"^2.5.0\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"@angular/build\": \"^21.1.0\",\r\n    \"@angular/cli\": \"^21.1.0\",\r\n    \"@angular/compiler-cli\": \"^21.1.0\",\r\n    \"typescript\": \"^5.9.3\"\r\n  }\r\n}\r\n"
+    },
+    {
+      "folderName": "src",
+      "items": [
+        {
+          "filename": "global_styles",
+          "fileExtension": "css",
+          "content": "/* Add application styles & imports to this file! */\r\n"
+        },
+        {
+          "filename": "index",
+          "fileExtension": "html",
+          "content": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <title>My app</title>\r\n    <meta charset=\"UTF-8\" />\r\n    <base href=\"/\">\r\n    <meta property=\"og:image\" content=\"https://bolt.new/static/og_default.png\" />\r\n    <meta name=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta name=\"twitter:image\" content=\"https://bolt.new/static/og_default.png\" />\r\n  </head>\r\n  <body>\r\n    <app-root>Loading...</app-root>\r\n  </body>\r\n</html>\r\n"
+        },
+        {
+          "filename": "main",
+          "fileExtension": "ts",
+          "content": "import { Component, signal } from '@angular/core';\r\nimport { bootstrapApplication } from '@angular/platform-browser';\r\n\r\n@Component({\r\n  selector: 'app-root',\r\n  template: `\r\n    <h1>Hello from {{ name }}!</h1>\r\n    <a target=\"_blank\" href=\"https://angular.dev/overview\">\r\n      Learn more about Angular\r\n    </a>\r\n    <button (click)=\"counter.set(counter() - 1)\">--</button>\r\n    <span> Counter: {{ counter() }} </span>\r\n    <button (click)=\"counter.set(counter() + 1)\">++</button>\r\n  `,\r\n})\r\nexport class App {\r\n  name = 'Angular';\r\n  counter = signal(0);\r\n}\r\n\r\nbootstrapApplication(App);\r\n"
+        }
+      ]
+    },
+    {
+      "filename": "tsconfig.app",
+      "fileExtension": "json",
+      "content": "/* To learn more about this file see: https://angular.io/config/tsconfig. */\r\n{\r\n  \"extends\": \"./tsconfig.json\",\r\n  \"compilerOptions\": {\r\n    \"outDir\": \"./out-tsc/app\",\r\n    \"types\": []\r\n  },\r\n  \"files\": [\"src/main.ts\"],\r\n  \"include\": [\"src/**/*.d.ts\"]\r\n}\r\n"
+    },
+    {
+      "filename": "tsconfig",
+      "fileExtension": "json",
+      "content": "/* To learn more about this file see: https://angular.io/config/tsconfig. */\r\n{\r\n  \"compileOnSave\": false,\r\n  \"compilerOptions\": {\r\n    \"outDir\": \"./dist/out-tsc\",\r\n    \"forceConsistentCasingInFileNames\": true,\r\n    \"strict\": true,\r\n    \"noImplicitOverride\": true,\r\n    \"noPropertyAccessFromIndexSignature\": true,\r\n    \"noImplicitReturns\": true,\r\n    \"noFallthroughCasesInSwitch\": true,\r\n    \"esModuleInterop\": true,\r\n    \"sourceMap\": true,\r\n    \"declaration\": false,\r\n    \"experimentalDecorators\": true,\r\n    \"moduleResolution\": \"bundler\",\r\n    \"importHelpers\": true,\r\n    \"target\": \"ES2022\",\r\n    \"module\": \"ES2022\",\r\n    \"useDefineForClassFields\": false\r\n  },\r\n  \"angularCompilerOptions\": {\r\n    \"enableI18nLegacyMessageIdFormat\": false,\r\n    \"strictInjectionParameters\": true,\r\n    \"strictInputAccessModifiers\": true,\r\n    \"strictTemplates\": true,\r\n    \"strictStandalone\": true\r\n  }\r\n}\r\n"
+    }
+  ]
+}

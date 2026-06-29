@@ -1,0 +1,45 @@
+{
+  "folderName": "vue",
+  "items": [
+    {
+      "filename": "package",
+      "fileExtension": "json",
+      "content": "{\r\n  \"name\": \"vue-starter\",\r\n  \"private\": true,\r\n  \"scripts\": {\r\n    \"serve\": \"vue-cli-service serve\",\r\n    \"build\": \"vue-cli-service build\"\r\n  },\r\n  \"dependencies\": {\r\n    \"vue\": \"^3.3.4\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"core-js\": \"^3.32.2\",\r\n    \"@vue/cli-plugin-babel\": \"^5.0.8\",\r\n    \"@vue/cli-service\": \"^5.0.8\"\r\n  }\r\n}\r\n"
+    },
+    {
+      "folderName": "public",
+      "items": [
+        {
+          "filename": "index",
+          "fileExtension": "html",
+          "content": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <title>Vue App</title>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width\" />\r\n  </head>\r\n  <body>\r\n    <div id=\"app\"></div>\r\n    <!-- built files will be auto injected -->\r\n  </body>\r\n</html>\r\n"
+        }
+      ]
+    },
+    {
+      "folderName": "src",
+      "items": [
+        {
+          "filename": "App",
+          "fileExtension": "vue",
+          "content": "<template>\r\n  <div id=\"app\">\r\n    <img\r\n      alt=\"Vue logo\"\r\n      width=\"200\"\r\n      height=\"200\"\r\n      src=\"https://vuejs.org/images/logo.png\"\r\n    />\r\n    <HelloWorld msg=\"Welcome to Your Vue.js App\" />\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nimport HelloWorld from './components/HelloWorld.vue';\r\n\r\nexport default {\r\n  name: 'App',\r\n  components: {\r\n    HelloWorld,\r\n  },\r\n};\r\n</script>\r\n\r\n<style>\r\n#app {\r\n  font-family: Avenir, Helvetica, Arial, sans-serif;\r\n  -webkit-font-smoothing: antialiased;\r\n  -moz-osx-font-smoothing: grayscale;\r\n  text-align: center;\r\n  color: #2c3e50;\r\n  margin-top: 60px;\r\n}\r\n</style>\r\n"
+        },
+        {
+          "folderName": "components",
+          "items": [
+            {
+              "filename": "HelloWorld",
+              "fileExtension": "vue",
+              "content": "<template>\r\n  <div class=\"hello\">\r\n    <h1>{{ msg }}</h1>\r\n    <p>\r\n      For a guide and recipes on how to configure / customize this project, check out the\r\n      <a href=\"https://cli.vuejs.org\" target=\"_blank\" rel=\"noopener\">vue-cli documentation</a>.\r\n    </p>\r\n    <h3>Installed CLI Plugins</h3>\r\n    <ul>\r\n      <li><a href=\"https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel\" target=\"_blank\" rel=\"noopener\">babel</a></li>\r\n    </ul>\r\n    <h3>Essential Links</h3>\r\n    <ul>\r\n      <li><a href=\"https://vuejs.org\" target=\"_blank\" rel=\"noopener\">Core Docs</a></li>\r\n      <li><a href=\"https://forum.vuejs.org\" target=\"_blank\" rel=\"noopener\">Forum</a></li>\r\n      <li><a href=\"https://chat.vuejs.org\" target=\"_blank\" rel=\"noopener\">Community Chat</a></li>\r\n      <li><a href=\"https://twitter.com/vuejs\" target=\"_blank\" rel=\"noopener\">Twitter</a></li>\r\n      <li><a href=\"https://news.vuejs.org\" target=\"_blank\" rel=\"noopener\">News</a></li>\r\n    </ul>\r\n    <h3>Ecosystem</h3>\r\n    <ul>\r\n      <li><a href=\"https://router.vuejs.org\" target=\"_blank\" rel=\"noopener\">vue-router</a></li>\r\n      <li><a href=\"https://vuex.vuejs.org\" target=\"_blank\" rel=\"noopener\">vuex</a></li>\r\n      <li><a href=\"https://github.com/vuejs/vue-devtools#vue-devtools\" target=\"_blank\" rel=\"noopener\">vue-devtools</a></li>\r\n      <li><a href=\"https://vue-loader.vuejs.org\" target=\"_blank\" rel=\"noopener\">vue-loader</a></li>\r\n      <li><a href=\"https://github.com/vuejs/awesome-vue\" target=\"_blank\" rel=\"noopener\">awesome-vue</a></li>\r\n    </ul>\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nexport default {\r\n  name: 'HelloWorld',\r\n  props: {\r\n    msg: String\r\n  }\r\n}\r\n</script>\r\n\r\n<!-- Add \"scoped\" attribute to limit CSS to this component only -->\r\n<style scoped>\r\nh3 {\r\n  margin: 40px 0 0;\r\n}\r\nul {\r\n  list-style-type: none;\r\n  padding: 0;\r\n}\r\nli {\r\n  display: inline-block;\r\n  margin: 0 10px;\r\n}\r\na {\r\n  color: #42b983;\r\n}\r\n</style>\r\n"
+            }
+          ]
+        },
+        {
+          "filename": "main",
+          "fileExtension": "js",
+          "content": "import { createApp } from 'vue';\r\nimport App from './App.vue';\r\n\r\ncreateApp(App).mount('#app');\r\n"
+        }
+      ]
+    }
+  ]
+}
