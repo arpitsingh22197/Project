@@ -85,10 +85,11 @@ export async function POST(request: NextRequest) {
         generatedAt: new Date().toISOString(),
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Context analysis error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Internal server error", message: error.message },
+      { error: "Internal server error", message },
       { status: 500 }
     );
   }
@@ -195,10 +196,14 @@ async function generateSuggestion(
           },
         }),
       });
-    } catch (fetchErr: any) {
+    } catch (fetchErr) {
       // Distinguish "Ollama isn't reachable" from other failures so it's
       // obvious in logs/response what to fix.
-      if (fetchErr.name === "AbortError") {
+      const isAbort =
+        fetchErr instanceof Error && fetchErr.name === "AbortError";
+      const message =
+        fetchErr instanceof Error ? fetchErr.message : "Unknown error";
+      if (isAbort) {
         return {
           suggestion: "// AI request timed out",
           warning: "Request to Ollama timed out after 120s",
@@ -206,7 +211,7 @@ async function generateSuggestion(
       }
       return {
         suggestion: "// AI suggestion unavailable",
-        warning: `Could not reach Ollama at ${OLLAMA_URL}. Is "ollama serve" running and is the model pulled (ollama pull ${OLLAMA_MODEL})? (${fetchErr.message})`,
+        warning: `Could not reach Ollama at ${OLLAMA_URL}. Is "ollama serve" running and is the model pulled (ollama pull ${OLLAMA_MODEL})? (${message})`,
       };
     }
 

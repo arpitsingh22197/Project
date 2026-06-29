@@ -1,10 +1,8 @@
-import { Empty } from '@/components/ui/empty'
 import { deleteProjectById, duplicateProjectById, editProjectById, getAllPlaygroundForUser } from '@/modules/dashboard/actions'
 import AddNewButton from '@/modules/dashboard/components/add-new'
 import AddRepo from '@/modules/dashboard/components/add-repo'
 import ProjectTable from '@/modules/dashboard/components/project-rable'
 import EmptyState from '@/modules/dashboard/empty-state'
-import { get } from 'http'
 import React from 'react'
 
 const Page = async() => {
