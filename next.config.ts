@@ -1,20 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  images:{
-    remotePatterns:[
+  images: {
+    remotePatterns: [
       {
-        protocol:"https",
-        hostname:"*",
-        port:'',
-        pathname:"/**"
+        protocol: "https",
+        hostname: "*",
+        port: '',
+        pathname: "/**"
       }
     ]
   },
   async headers() {
     return [
       {
-        // Apply to all routes
         source: '/:path*',
         headers: [
           {
@@ -23,13 +22,22 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Cross-Origin-Embedder-Policy',
-            value: 'require-corp',
+            value: 'credentialless',
           },
         ],
       },
     ];
   },
-  reactStrictMode:false
+  reactStrictMode: false,
+
+  // Add this 👇
+  webpack: (config) => {
+    config.watchOptions = {
+      poll: 1000,
+      aggregateTimeout: 300,
+    };
+    return config;
+  },
 };
 
 export default nextConfig;
