@@ -6,6 +6,7 @@ import {
   publicRoutes,
   authRoutes,
 } from "@/routes";
+
 import authConfig from "./auth.config";
 
 const { auth } = NextAuth(authConfig);
@@ -14,30 +15,40 @@ export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const pathname = nextUrl.pathname;
 
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isApiAuthRoute = pathname.startsWith(apiAuthPrefix);
 
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  // FIX: supports nested routes
+  const isPublicRoute = publicRoutes.some((route) =>
+    pathname === route || pathname.startsWith(route + "/")
+  );
 
-  if (isApiAuthRoute) {
-    return null;
-  }
+  const isAuthRoute = authRoutes.some((route) =>
+    pathname === route || pathname.startsWith(route + "/")
+  );
 
+  // Allow NextAuth API routes
+  if (isApiAuthRoute) return;
+
+  // Auth pages (sign-in/sign-up)
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+      return Response.redirect(
+        new URL(DEFAULT_LOGIN_REDIRECT, nextUrl)
+      );
     }
-    return null;
+    return;
   }
 
+  // Protected routes
   if (!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL("/auth/sign-in", nextUrl));
   }
 
-  return null;
+  return;
 });
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ["/(.*)"],
 };
