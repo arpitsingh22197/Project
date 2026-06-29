@@ -196,11 +196,7 @@ export function DashboardSidebar({
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="View all">
-                  <Link href="/playgrounds">
-                    <span className="text-sm text-muted-foreground">
-                      View all playgrounds
-                    </span>
-                  </Link>
+                  
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -212,10 +208,7 @@ export function DashboardSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Settings">
-              <Link href="/settings">
-                <Settings className="h-4 w-4" />
-                <span>Settings</span>
-              </Link>
+              
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

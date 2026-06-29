@@ -28,9 +28,9 @@ export default function HomeLayout({
       />
 
       {/* Radial Glow */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+      {/* <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <div className="w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-blue-400 via-blue-300 to-indigo-500 opacity-20 blur-3xl animate-pulse" />
-      </div>
+      </div> */}
 
       {/* Mask for depth */}
       <div className="pointer-events-none absolute inset-0 bg-white dark:bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] z-[5]" />
