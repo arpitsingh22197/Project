@@ -1,41 +1,38 @@
 /**
- * An Array of routes that are accessible to the public
- * These routes do not require authentication
- * @type {string[]}
+ * Public routes (no authentication required)
  */
-
 export const publicRoutes: string[] = [
-   
-]
+  "/",
+  "/about",
+  "/pricing",
+  "/docs",
+];
 
 /**
- * An Array of routes that are protected
- * These routes require authentication
- * @type {string[]}
+ * Protected routes (authentication required)
  */
-
 export const protectedRoutes: string[] = [
-    "/",
-    
-]
+  "/dashboard",
+  "/playground",
+  "/settings",
+];
 
 /**
- * An Array of routes that are accessible to the public
- * Routes that start with this (/api/auth) prefix do not require authentication
- * @type {string[]}
+ * Auth routes (redirect if already logged in)
  */
-
 export const authRoutes: string[] = [
-    "/auth/sign-in",   // Added leading slash
-   
-]
+  "/auth/sign-in",
+  "/auth/sign-up",
+  "/auth/error",
+  "/auth/forgot-password",
+];
 
 /**
- * An Array of routes that are accessible to the public
- * Routes that start with this (/api/auth) prefix do not require authentication
- * @type {string}
+ * API auth prefix (NextAuth / custom auth APIs)
  */
+export const apiAuthPrefix: string = "/api/auth";
 
-export const apiAuthPrefix: string = "/api/auth"
-
-export const DEFAULT_LOGIN_REDIRECT = "/"; // Changed to redirect to home page after login
+/**
+ * Default redirect after login
+ */
+export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
