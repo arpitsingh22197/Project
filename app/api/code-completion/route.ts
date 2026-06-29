@@ -8,6 +8,14 @@ export const runtime = "nodejs";
 const OLLAMA_URL = process.env.OLLAMA_URL || "http://localhost:11434";
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "qwen2.5-coder:0.5b";
 
+// Production fallback: when GROQ_API_KEY is set (e.g. on Vercel, where Ollama
+// running on a developer's own machine is unreachable), route completions
+// through Groq's hosted API instead. Local dev with no GROQ_API_KEY set
+// keeps using Ollama unchanged.
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-20b";
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+
 interface CodeSuggestionRequest {
   fileContent: string;
   cursorLine: number;
@@ -170,6 +178,93 @@ Generate suggestion:`;
 async function generateSuggestion(
   prompt: string
 ): Promise<{ suggestion: string; warning?: string }> {
+  // Production (Vercel) sets GROQ_API_KEY since it can't reach a local
+  // Ollama instance running on a developer's machine. Local dev leaves
+  // GROQ_API_KEY unset and keeps using Ollama as before.
+  if (GROQ_API_KEY) {
+    return generateFromGroq(prompt);
+  }
+  return generateFromOllama(prompt);
+}
+
+function cleanSuggestion(raw: string): string {
+  return raw
+    .replace(/```[\w]*\n?/g, "")
+    .replace(/```/g, "")
+    .trim();
+}
+
+async function generateFromGroq(
+  prompt: string
+): Promise<{ suggestion: string; warning?: string }> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    let response: Response;
+    try {
+      response = await fetch(GROQ_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${GROQ_API_KEY}`,
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are an expert code completion assistant. Respond with ONLY the code to insert at the cursor — no explanations, no markdown fences.",
+            },
+            { role: "user", content: prompt },
+          ],
+          temperature: 0.2,
+          max_tokens: 150,
+        }),
+      });
+    } catch (fetchErr) {
+      const isAbort =
+        fetchErr instanceof Error && fetchErr.name === "AbortError";
+      const message =
+        fetchErr instanceof Error ? fetchErr.message : "Unknown error";
+      return {
+        suggestion: "// AI suggestion unavailable",
+        warning: isAbort
+          ? "Request to Groq timed out after 30s"
+          : `Could not reach Groq: ${message}`,
+      };
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      return {
+        suggestion: "// AI suggestion unavailable",
+        warning: `Groq returned ${response.status}: ${errorText}`,
+      };
+    }
+
+    const data = await response.json();
+    const text = data?.choices?.[0]?.message?.content;
+
+    if (typeof text !== "string" || text.length === 0) {
+      return {
+        suggestion: "// No suggestion generated",
+        warning: "Groq responded but returned no usable text",
+      };
+    }
+
+    const suggestion = cleanSuggestion(text);
+    return { suggestion: suggestion || "// No suggestion generated" };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function generateFromOllama(
+  prompt: string
+): Promise<{ suggestion: string; warning?: string }> {
   const controller = new AbortController();
   // 30s is already generous for an inline completion — if Ollama can't
   // respond in that time, the UX of waiting 2 full minutes for ghost text
@@ -232,13 +327,7 @@ async function generateSuggestion(
       };
     }
 
-    let suggestion: string = data.response;
-
-    // Remove markdown code fences
-    suggestion = suggestion
-      .replace(/```[\w]*\n?/g, "")
-      .replace(/```/g, "")
-      .trim();
+    const suggestion = cleanSuggestion(data.response);
 
     return { suggestion: suggestion || "// No suggestion generated" };
   } finally {
