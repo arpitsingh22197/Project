@@ -5,7 +5,7 @@ import { WebContainer } from "@webcontainer/api";
 import { TemplateFolder } from "@/modules/playground/lib/path-to-json";
 
 interface UseWebContainerProps {
-  templateData: TemplateFolder;
+  templateData: TemplateFolder | null;
 }
 
 interface UseWebContaierReturn {
