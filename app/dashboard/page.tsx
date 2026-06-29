@@ -7,6 +7,15 @@ import React from 'react'
 
 const Page = async() => {
   const playgrounds = await getAllPlaygroundForUser();
+  const projects = (playgrounds || []).map((p) => ({
+    ...p,
+    description: p.description || "",
+    user: {
+      ...p.user,
+      name: p.user.name || "Anonymous",
+      image: p.user.image || "",
+    },
+  }));
   return (
     // Changed justify-start to flex-col (already there) and added h-full
     <div className="flex flex-col min-h-screen mx-auto max-w-7xl px-4 py-10"> 
@@ -30,7 +39,7 @@ const Page = async() => {
             </div>
           ) : (
             <ProjectTable
-              projects={playgrounds || []}
+              projects={projects}
               onDeleteProject={deleteProjectById}
               onUpdateProject={ editProjectById}
               onDuplicateProject={duplicateProjectById}
