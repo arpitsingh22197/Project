@@ -3,6 +3,7 @@ import Google from "next-auth/providers/google"
 import { NextAuthConfig } from "next-auth"
 
 export default {
+    trustHost: true,
     providers: [
         GitHub({
             clientId: process.env.AUTH_GITHUB_ID,
