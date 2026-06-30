@@ -1,8 +1,8 @@
 # CodeGenie AI
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](#license) [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#) [![Stars](https://img.shields.io/badge/stars-⭐-blue.svg)](#)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](#license) [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#) [![Stars](https://img.shields.io/badge/stars-welcome-yellow.svg)](#)
 
-A browser-first, AI-powered development environment that helps developers write, run, debug, and ship code without local setup. CodeGenie AI combines a cloud IDE, intelligent AI assistance, and integrated tooling for a smooth developer experience.
+A browser-first, AI-powered development environment that helps developers write, run, debug, and ship code without local setup. CodeGenie AI combines a cloud IDE, intelligent AI assistance, and in-browser runtime capabilities for a seamless coding experience.
 
 ---
 
@@ -37,41 +37,46 @@ CodeGenie AI accelerates development by removing environment setup friction and 
 ---
 
 ## Features
-- Intelligent AI Assistant (generate, explain, refactor code)
-- Context-aware autocomplete & code completion
-- Cloud browser IDE with Monaco editor
-- Live previews and in-browser terminal (WebContainer)
-- GitHub integration (import/sync repositories)
-- Authentication with Google OAuth & session management
-- Project and file management with autosave
-- Multi-language support (JS/TS/Python/Java and more)
-- Local/Cloud AI backends (Google Gemini, Ollama support)
+- **Intelligent AI Assistant** — Generate, explain, and refactor code with Groq or local Ollama models
+- **Multi-AI Model Support** — Fallback between Groq API and local Ollama for flexibility
+- **Context-aware Autocomplete** — Real-time code completion powered by AI
+- **Cloud Browser IDE** — Monaco editor with full code editing capabilities
+- **Live In-Browser Terminal** — WebContainer API for npm/script execution and REPL
+- **Project Management** — Create projects, file management with autosave, and browser-based persistence
+- **Authentication** — Google OAuth with NextAuth.js and secure session management
+- **Multi-language Support** — JavaScript, TypeScript, Python, Java, and more
+- **Database Integration** — Built-in user and project persistence with Prisma
 
 ---
 
 ## Tech Stack
-- Frontend: Next.js 15, React 19, TypeScript, Tailwind CSS, Shadcn UI, Monaco Editor  
-- Backend: Next.js API routes, NextAuth.js  
-- Database: MongoDB (Mongoose)  
-- AI: Google Gemini API, Ollama (local model support)  
-- Runtime: WebContainer API  
-- Cloud & Integrations: Cloudinary, GitHub API
+- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS, Shadcn/UI, Monaco Editor
+- **Backend:** Next.js API routes, NextAuth.js
+- **Database:** MongoDB with Prisma ORM
+- **AI Models:** Groq API (primary), Ollama (local/self-hosted fallback)
+- **Runtime:** WebContainer API (in-browser npm/shell environment)
+- **Authentication:** NextAuth.js with Google OAuth
+- **UI Components:** Radix UI, custom Shadcn components
 
 ---
 
 ## Project Structure
 High-level layout:
 ```
-app/
-components/
-hooks/
-lib/
-modules/
-services/
-types/
-public/
-styles/
-prisma/
+app/                    # Next.js app directory
+├── api/               # API routes (auth, AI, playground)
+├── (auth)/            # Auth-related pages
+└── (main)/            # Main application pages
+
+components/            # Reusable React components
+hooks/                 # Custom React hooks
+lib/                   # Utilities and helpers
+modules/               # Feature-specific modules
+services/              # External service integrations
+types/                 # TypeScript type definitions
+styles/                # Global styles
+prisma/                # Prisma ORM schema
+public/                # Static assets
 ```
 
 ---
@@ -79,121 +84,171 @@ prisma/
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+ (or the project's required Node version)  
-- npm or pnpm  
-- MongoDB instance (local or cloud)  
-- Optional: Cloudinary account, Google/GitHub OAuth credentials, Gemini API key
+- Node.js 18+ 
+- npm or pnpm
+- MongoDB instance (local or cloud)
+- **For AI features:**
+  - Groq API key (https://console.groq.com) — **OR**
+  - Local Ollama installation (https://ollama.ai)
+- **For authentication:**
+  - Google OAuth credentials (https://console.cloud.google.com)
 
 ### Clone & Install
 ```bash
-git clone https://github.com/yourusername/codegenie-ai.git
-cd codegenie-ai
+git clone https://github.com/arpitsingh22197/Project.git
+cd Project
 npm install
 ```
 
 ### Environment
-Create a `.env.local` file in the project root with the following variables:
+Create a `.env.local` file in the project root:
 ```env
-MONGODB_URI=
+# Database
+DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/codegenie
+
+# NextAuth
 NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=
-AUTH_GOOGLE_ID=
-AUTH_GOOGLE_SECRET=
-GEMINI_API_KEY=
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-GITHUB_TOKEN=
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
+NEXTAUTH_SECRET=your-secret-key-here
+
+# Google OAuth
+AUTH_GOOGLE_ID=your-google-client-id
+AUTH_GOOGLE_SECRET=your-google-client-secret
+
+# AI Models (choose one or both for fallback)
+GROQ_API_KEY=your-groq-api-key          # Primary AI provider
+OLLAMA_BASE_URL=http://localhost:11434  # Local Ollama (optional fallback)
+
+# Optional: GitHub integration
+GITHUB_TOKEN=your-github-token-optional
 ```
-Notes:
-- Keep secrets out of version control.
-- Provide working OAuth keys for authentication flows and a valid MongoDB URI.
+
+**Notes:**
+- `DATABASE_URL`: Obtain from MongoDB Atlas
+- `NEXTAUTH_SECRET`: Generate with `openssl rand -base64 32`
+- `GROQ_API_KEY`: Get free API key from [Groq Console](https://console.groq.com)
+- `OLLAMA_BASE_URL`: Only needed if running Ollama locally
+- Keep all secrets out of version control
 
 ### Run Locally
 ```bash
-# development
+# Development (with Turbopack for fast rebuilds)
 npm run dev
 
-# build and serve
+# Production build
 npm run build
 npm run start
+
+# Lint code
+npm run lint
 ```
+
 Open: http://localhost:3000
 
 ---
 
 ## Usage
-- Create a new project or import a GitHub repository.
-- Use the AI Assistant to generate, refactor, or explain code from prompts.
-- Use the in-browser terminal to install packages and run scripts.
-- Preview front-end applications in the live preview pane.
 
-Example flow — generate a component:
-1. Open the Editor and create a new file.
-2. Prompt the AI Assistant: "Create a responsive navbar in React + Tailwind with a mobile menu."
-3. Review, save, and run the dev server to preview.
+### Basic Workflow
+1. **Sign in** with Google OAuth
+2. **Create a new project** or start with a template (React, Next.js, Express, Vue, Hono, Angular)
+3. **Use the AI Assistant** to:
+   - Generate code from natural language prompts
+   - Refactor existing code
+   - Explain code snippets
+4. **Run code** in the in-browser terminal without local setup
+5. **Save and iterate** — projects persist to MongoDB
+
+### Example: Generate a React Component
+1. Create a new file in the editor (e.g., `Navbar.tsx`)
+2. Prompt the AI: "Create a responsive navbar in React + Tailwind with a mobile menu and dark mode toggle"
+3. Review the generated code, edit as needed
+4. Import and use in your project
+5. Test in the live preview pane
+
+### AI Model Behavior
+- **Primary:** Groq API is used by default (fast, free tier available)
+- **Fallback:** If Groq fails or is unavailable, the system falls back to local Ollama
+- **Self-hosted:** Run Ollama locally for complete privacy and offline operation
 
 ---
 
 ## Development Workflow
-- Branch naming: feature/<short-description>, fix/<short-description>  
-- Commit messages: short, imperative (e.g., "feat: add project templates")  
-- Keep PRs small and focused; include screenshots for UI changes.  
-- Run linters and tests before opening a PR:
-```bash
-npm run lint
-npm run test
-```
+- **Branch naming:** `feature/<short-description>` or `fix/<short-description>`
+- **Commit messages:** Short, imperative tense (e.g., "feat: add code generation", "fix: auth session leak")
+- **PRs:** Keep focused and small; include screenshots for UI changes
+- **Before opening a PR:**
+  ```bash
+  npm run lint
+  ```
 
 ---
 
 ## Architecture & Components
-- Editor: Monaco Editor with custom AI integrations for inline suggestions.  
-- AI Assistant: Server-side orchestrator routing prompts to Google Gemini or local Ollama.  
-- Auth: NextAuth.js with Google/GitHub providers; sessions stored in MongoDB.  
-- Runtime: WebContainer API provides an isolated in-browser runtime for npm scripts, dev servers, and REPLs.  
-- Storage: Cloudinary for media assets; MongoDB for application and user data.
+
+### Editor
+- Monaco Editor with syntax highlighting for 50+ languages
+- Custom AI integrations for inline code suggestions
+- Real-time file management and autosave to MongoDB
+
+### AI Assistant
+- Server-side orchestrator routing prompts to Groq or local Ollama
+- Intelligent fallback: tries Groq first, falls back to Ollama if needed
+- Streaming responses for real-time user feedback
+
+### Authentication & Sessions
+- NextAuth.js with Google OAuth provider
+- Sessions stored securely in MongoDB via Prisma
+- Role-based access control (USER, PREMIUM_USER, ADMIN)
+
+### Runtime
+- WebContainer API provides an isolated, in-browser runtime
+- Full npm package installation and script execution
+- REPL support for quick testing and debugging
+
+### Database & ORM
+- MongoDB for user, project, and chat data persistence
+- Prisma ORM for type-safe queries and automatic migrations
+- Automatic schema generation on build
 
 ---
 
 ## Roadmap
 Planned improvements:
-- AI-powered code review & suggestions
+- AI-powered code review and suggestions
 - Real-time collaborative editing
-- Voice assistant and multimodal prompting
-- One-click deployment (Vercel, Netlify)
-- Plugin marketplace & project templates
+- Voice-based prompts and multimodal AI interactions
+- One-click deployment (Vercel, Netlify, Railway)
+- Custom project templates and plugin marketplace
+- Extended language support (Go, Rust, C++)
 
 ---
 
 ## Contributing
-Thanks for contributing — you’re welcome!
-1. Fork the repo and create a branch: `git checkout -b feature/your-feature`  
-2. Commit changes: `git commit -m "feat: description"`  
-3. Push and open a PR against `main`  
-4. Fill the PR template and add screenshots for UI changes  
-5. Follow code style (Prettier/ESLint) and run tests locally
+Contributions are welcome! Here's how:
+1. Fork the repo and create a feature branch: `git checkout -b feature/your-feature`
+2. Make your changes and commit: `git commit -m "feat: description of changes"`
+3. Push to your fork and open a PR against `main`
+4. Fill out the PR template and include screenshots for UI changes
+5. Follow code style (Prettier/ESLint); run `npm run lint` before submitting
 
-Consider adding a CONTRIBUTING.md and ISSUE_TEMPLATE.md to standardize contribution workflows.
+See `CONTRIBUTING.md` for detailed guidelines (coming soon).
 
 ---
 
 ## Security
-If you discover a security vulnerability, please report it privately to the project owner instead of opening a public issue.
+If you discover a security vulnerability, please report it **privately** to the project owner instead of opening a public issue. Do not disclose vulnerabilities publicly until they are fixed.
 
 ---
 
 ## License
-This project is licensed under the MIT License — see the LICENSE file for details.
+This project is licensed under the MIT License — see the [LICENSE](./LICENSE) file for details.
 
 ---
 
 ## Author & Contact
-Arpit — ECE Student, Full-stack & AI enthusiast  
-GitHub: https://github.com/arpitsingh22197
+**Arpit** — ECE Student, Full-stack & AI Enthusiast
+
+- **GitHub:** https://github.com/arpitsingh22197
+- **LinkedIn:** https://www.linkedin.com/in/arpit-singh-b9b5052a0/
 
 ---
----
-
